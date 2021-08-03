@@ -40,9 +40,7 @@ Users should be able to:
 
 ### Built with
 
-- HTML5, CSS3, JS
-- TypeScript
-- React and Redux
+- React, Redux and Typescript
 - Styled Components
 - Testing with Jest
 
@@ -54,4 +52,4 @@ Users should be able to:
 
 ## Author
 
-- Frontend Mentor - [@yourusername](https://www.frontendmentor.io/profile/bernizhel)
+- Frontend Mentor - [@bernizhel](https://www.frontendmentor.io/profile/bernizhel)
