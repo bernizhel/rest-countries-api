@@ -17,7 +17,7 @@
 README-initial.md
 style-guide.md
 /design/
-vars.js
+/.idea/
 
 # dependencies
 /node_modules

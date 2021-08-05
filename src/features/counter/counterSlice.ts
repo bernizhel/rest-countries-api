@@ -56,6 +56,9 @@ export const counterSlice = createSlice({
       .addCase(incrementAsync.fulfilled, (state, action) => {
         state.status = 'idle';
         state.value += action.payload;
+      })
+      .addDefaultCase((state, action) => {
+        console.warn(state, action)
       });
   },
 });

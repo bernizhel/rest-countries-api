@@ -42,7 +42,7 @@ Users should be able to:
 
 - React, Redux and Typescript
 - Styled Components
-- Testing with Jest
+- Tested with Jest
 
 ### What I learned
 
