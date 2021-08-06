@@ -7,9 +7,13 @@ interface FlexProps {
     display?: string;
     direction?: string;
     wrap?: string;
-    w?: string | number;
-    h?: string | number;
-    bgcolor?: string;
+    w?: string;
+    maxw?: string;
+    minw?: string;
+    h?: string;
+    maxh?: string;
+    minh?: string;
+    type?: 'div' | 'nav' | 'section' | 'main' | 'header';
     children?: React.ReactChild | React.ReactNode;
 }
 
@@ -19,13 +23,16 @@ const StyledFlex = styled.div<FlexProps>`
   align-items: ${props => props.align || 'flex-start'};
   flex-direction: ${props => props.direction || 'row'};
   flex-wrap: ${props => props.wrap || 'nowrap'};
-  width: ${props => props.w || '100%'};
-  height: ${props => props.h || '100%'};
-  background-color: ${props => props.bgcolor || props.theme.background};
+  width: ${props => props.w || 'auto'};
+  height: ${props => props.h || 'auto'};
+  max-width: ${props => props.maxw || 'auto'};
+  max-height: ${props => props.maxh || 'auto'};
+  min-width: ${props => props.minw || 'auto'};
+  min-height: ${props => props.minh || 'auto'};
 `;
 
-const Flex: FC<FlexProps> = ({children, ...props}) => {
-    return <StyledFlex {...props}>{children}</StyledFlex>;
+const Flex: FC<FlexProps> = ({type, children, ...props}) => {
+    return <StyledFlex as={type} {...props}>{children}</StyledFlex>;
 };
 
 export default Flex;
