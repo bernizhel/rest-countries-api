@@ -6,9 +6,10 @@ const StyledSelect = styled.select`
   background-color: ${props => props.theme.elementBackground};
   color: ${props => props.theme.text};
   padding: 15px;
-  border: 2px solid ${props => props.theme.border};
+  box-shadow: 0 5px 5px ${props => props.theme.border};
   border-radius: 5px;
   outline: none;
+  border: none;
   width: 150px;
 `;
 

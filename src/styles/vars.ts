@@ -12,6 +12,7 @@ export const colors = {
 export const mediaSizes = {
     MOBILE: '(max-width: 500px)',
     TABLET: '(min-width: 501px) and (max-width: 768px)',
+    DESKTOP_SMALL: '(min-width: 769px) and (max-width: 1080px)',
 }
 
 export const fontOptions = {

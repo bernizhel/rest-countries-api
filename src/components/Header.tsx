@@ -8,7 +8,7 @@ import {Link} from 'react-router-dom';
 const StyledHeader = styled(Flex)`
   background-color: ${props => props.theme.elementBackground};
   padding: 0 50px;
-  border-bottom: 3px solid ${props => props.theme.border};
+  box-shadow: 0 5px 5px ${props => props.theme.border};
   @media ${ms.MOBILE} {
     padding: 0 15px;
   }
@@ -29,7 +29,7 @@ const StyledHeading = styled.h1`
 const Header: FC = () => {
     return (
         <StyledHeader type={'header'} align={'center'} justify={'center'} minh={'60px'} w={'100%'}>
-            <Flex justify={'space-between'} align={'center'} maxw={'1440px'} w={'100%'}>
+            <Flex justify={'space-between'} align={'center'} maxw={'1080px'} w={'100%'}>
                 <StyledHeading><Link to='/'>Where in the world?</Link></StyledHeading>
                 <ThemeSwitcher/>
             </Flex>

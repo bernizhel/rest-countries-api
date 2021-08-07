@@ -7,7 +7,7 @@ import Flex from "../../components/Flex";
 export interface ICountryExtended extends ICountryBase {
     nativeName: string;
     subregion: string;
-    topLevelDomain: string[];
+    topLevelDomains: string[];
     currencies: object[];
     languages: object[];
     borders: string[];
@@ -15,17 +15,13 @@ export interface ICountryExtended extends ICountryBase {
 
 type ICountryExtendedWrapper = ICountryExtended[]
 
-interface INeed {
-    name: string;
-}
-
 const CountryExtended: FC<RouterParams> = ({name}) => {
     const [country, setCountry] = useState<ICountryExtended>({} as ICountryExtended)
     useEffect(() => {
         API.get(`/name/${name}?fullText=true`)
             .then(res => res.data)
             .catch(e => console.log(e))
-            .then((json: ICountryExtendedWrapper) => setCountry(json[0]));
+            .then((json: ICountryExtendedWrapper) => console.log(json));
     }, [name])
     // todo: fix the bug with extended pages
     return (
@@ -36,10 +32,10 @@ const CountryExtended: FC<RouterParams> = ({name}) => {
                 {country.region}, {country.capital},
                 {country.nativeName}, {country.subregion}
             </p>
-            <p>Domains: {country.topLevelDomain.map(i => i).join(', ')};</p>
-            <p>Currencies: {country.currencies.map<INeed>(c => ({...c} as INeed)).map((c: INeed) => c.name)};</p>
-            <p>Languages: {country.languages.map<INeed>(l => ({...l} as INeed)).map((l: INeed) => l.name)};</p>
-            <p>Borders: {country.borders.map(i => i).join(', ')}</p>
+            <p>Domains: {country.topLevelDomains.join(', ')};</p>
+            <p>Currencies: {country.currencies.map((c, i) => <span key={i}>c.name</span>)}</p>
+            <p>Currencies: {country.languages.map((l, i) => <span key={i}>l.name</span>)}</p>
+            <p>Borders: {country.borders.join(', ')}</p>
         </Flex>
     );
 };
