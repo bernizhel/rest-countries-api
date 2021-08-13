@@ -1,13 +1,12 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {RootState} from "../../app/store";
-import Cookies from 'js-cookie';
 
 interface ThemeState {
     mode: string;
 }
 
 const initialState: ThemeState = {
-    mode: Cookies.get('theme') ?? 'light',
+    mode: localStorage.getItem('theme') ?? 'light',
 }
 
 const themeSlice = createSlice({
@@ -22,7 +21,7 @@ const themeSlice = createSlice({
             } else {
                 state.mode = 'light';
             }
-            Cookies.set('theme', state.mode)
+            localStorage.setItem('theme', state.mode)
         },
     },
 });

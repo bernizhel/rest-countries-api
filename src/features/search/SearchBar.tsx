@@ -1,4 +1,4 @@
-import React, {MutableRefObject, useRef} from 'react';
+import { MutableRefObject, useRef } from 'react';
 import styled from "styled-components";
 import Icon, {StyledIcon} from "../../components/Icon";
 

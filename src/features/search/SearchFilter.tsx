@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from "styled-components";
 
 const StyledSelect = styled.select`
@@ -8,7 +7,6 @@ const StyledSelect = styled.select`
   padding: 15px;
   box-shadow: 0 5px 5px ${props => props.theme.border};
   border-radius: 5px;
-  outline: none;
   border: none;
   width: 150px;
 `;

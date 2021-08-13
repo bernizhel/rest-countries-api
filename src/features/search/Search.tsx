@@ -1,4 +1,3 @@
-import React from 'react';
 import SearchBar from "./SearchBar";
 import SearchFilter from "./SearchFilter";
 import Flex from "../../components/Flex";
@@ -10,7 +9,7 @@ const StyledSearch = styled(Flex)`
 
 const Search = () => {
     return (
-        <StyledSearch type={'nav'} justify={'space-between'} w={'100%'}>
+        <StyledSearch type={'nav'} jc={'space-between'} w={'100%'}>
             <SearchBar />
             <SearchFilter />
         </StyledSearch>

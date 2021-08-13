@@ -1,25 +1,15 @@
-import React, {FC} from 'react';
+import { FC } from 'react';
+import * as React from 'react';
 import styled from "styled-components";
+import IContainerProps from "./IBaseContainer";
 
-interface GridProps {
-    ai?: string;
-    ac?: string;
+interface GridProps extends IContainerProps {
     ji?: string;
-    jc?: string;
     colGap?: string;
     rowGap?: string;
-    display?: string;
-    w?: string;
-    maxw?: string;
-    minw?: string;
-    h?: string;
-    maxh?: string;
-    minh?: string;
     tr?: string;
     tc?: string;
     gap?: string;
-    type?: 'div' | 'nav' | 'section' | 'main' | 'header';
-    children?: React.ReactChild | React.ReactNode;
 }
 
 const StyledGrid = styled.div<GridProps>`

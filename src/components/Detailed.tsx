@@ -1,8 +1,8 @@
-import React, {FC} from 'react';
+import { lazy, Suspense, FC } from 'react';
 import Loader from "./Loader";
 import {useParams} from "react-router-dom";
 
-const CountryExtended = React.lazy(() => import('../features/countries/CountryExtended'));
+const CountryExtended = lazy(() => import('../features/countries/CountryExtended'));
 
 export interface RouterParams {
     name: string;
@@ -11,9 +11,9 @@ export interface RouterParams {
 const Detailed: FC = () => {
     const {name} = useParams<RouterParams>()
     return (
-        <React.Suspense fallback={<Loader />}>
+        <Suspense fallback={<Loader />}>
             <CountryExtended name={name} />
-        </React.Suspense>
+        </Suspense>
     );
 };
 

@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import { FC, useEffect, useState } from 'react';
 import {ICountryBase, StyledImage} from "./Country";
 import {RouterParams} from "../../components/Detailed";
 import API from "./countriesAPI";

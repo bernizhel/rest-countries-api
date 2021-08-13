@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import API from './countriesAPI'
 import Country, {ICountryBase} from './Country'
 import Grid from "../../components/Grid";
@@ -30,7 +30,7 @@ const TestAPI: FC = () => {
             .then((json: Countries) => setCountries(json));
     }, [])
     return (
-        <StyledGrid w={'100%'} tc={'repeat(4, 1fr)'} gap={'50px'} ji={'center'}>
+        <StyledGrid type={'ul'} w={'100%'} tc={'repeat(4, 1fr)'} gap={'50px'} ji={'center'}>
             {countries.map(country => (
                 <Country key={country.numericCode} {...country}/>
             ))}

@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import { FC } from 'react';
 import ThemeSwitcher from '../features/theme/ThemeSwitcher'
 import Flex from './Flex'
 import styled from "styled-components";
@@ -28,8 +28,8 @@ const StyledHeading = styled.h1`
 
 const Header: FC = () => {
     return (
-        <StyledHeader type={'header'} align={'center'} justify={'center'} minh={'60px'} w={'100%'}>
-            <Flex justify={'space-between'} align={'center'} maxw={'1080px'} w={'100%'}>
+        <StyledHeader type={'header'} ai={'center'} jc={'center'} minh={'60px'} w={'100%'}>
+            <Flex jc={'space-between'} ai={'center'} maxw={'1080px'} w={'100%'}>
                 <StyledHeading><Link to='/'>Where in the world?</Link></StyledHeading>
                 <ThemeSwitcher/>
             </Flex>

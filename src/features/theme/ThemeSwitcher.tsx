@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import { FC } from 'react';
 import {useAppDispatch} from "../../app/hooks";
 import {toggle} from "./themeSlice";
 import {mediaSizes as ms} from '../../styles/vars'

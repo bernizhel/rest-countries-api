@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import { FC } from 'react';
 import {Link} from "react-router-dom";
 import styled from "styled-components";
 import {fontOptions as fo} from "../../styles/vars";
@@ -19,7 +19,7 @@ const StyledCountry = styled.li`
   }
   list-style: none;
   width: 200px;
-  height: 300px;
+  min-height: 300px;
   border-radius: 5px;
   background-color: ${props => props.theme.elementBackground};
   box-shadow: 0 10px 10px ${props => props.theme.border};
@@ -29,7 +29,7 @@ const StyledInfo = styled.div`
   padding: 15px;
 `;
 
-const StyledInfoHeading = styled.h3`
+const StyledInfoHeading = styled.h2`
   margin: 0 0 15px 0;
 `;
 
@@ -51,7 +51,7 @@ const Country: FC<ICountryBase> = ({...country}) => {
     return (
         <StyledCountry>
             <Link to={'/' + country.name.toLowerCase()}>
-                <StyledImage src={country.flag}/>
+                <StyledImage src={country.flag} alt={`Flag of ${country.name}`}/>
                 <StyledInfo>
                     <StyledInfoHeading>{country.name}</StyledInfoHeading>
                     <StyledInfoItem>Population: <StyledInfoValue>{country.population}</StyledInfoValue></StyledInfoItem>

@@ -1,4 +1,3 @@
-import React from 'react';
 import Header from "./components/Header";
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import styled, {createGlobalStyle, ThemeProvider} from 'styled-components';
@@ -8,6 +7,7 @@ import {selectTheme} from "./features/theme/themeSlice";
 import {fontOptions as fo} from "./styles/vars";
 import Main from "./components/Main";
 import Detailed from "./components/Detailed";
+import ErrorBoundary from "./ErrorBoundary";
 
 export const GlobalStyles = createGlobalStyle`
   *, *::before, *::after {
@@ -18,6 +18,28 @@ export const GlobalStyles = createGlobalStyle`
     font-weight: ${fo.REGULAR_WEIGHT};
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    &::-webkit-scrollbar {
+      width: .75em;
+    }
+
+    &::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+      background-color: #aaa;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #5a5a5a;
+      &:hover {
+        background-color: #666;
+      }
+    }
+
+    &::-webkit-scrollbar-corner {
+      background-color: #333;
+    }
   }
 `;
 
@@ -37,12 +59,11 @@ function App() {
                     <Header/>
                     <Switch>
                         <Route exact path='/'>
-                            <Main />
+                            <Main/>
                         </Route>
-                        <Route path='/api'>
-                            <p>Hello there</p>
-                        </Route>
-                        <Route path={'/:name'} component={Detailed} />
+                        <ErrorBoundary>
+                            <Route path={'/:name'} component={Detailed}/>
+                        </ErrorBoundary>
                     </Switch>
                 </StyledApp>
             </BrowserRouter>
