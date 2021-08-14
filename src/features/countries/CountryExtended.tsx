@@ -1,29 +1,20 @@
 import { FC, useEffect, useState } from 'react';
-import {ICountryBase, StyledImage} from "./Country";
+import {StyledImage} from "./Country";
 import {RouterParams} from "../../components/Detailed";
 import API from "./countriesAPI";
 import Flex from "../../components/Flex";
+import {DetailedCountries, IDetailedCountry} from "./countriesTypes";
 
-export interface ICountryExtended extends ICountryBase {
-    nativeName: string;
-    subregion: string;
-    topLevelDomains: string[];
-    currencies: object[];
-    languages: object[];
-    borders: string[];
-}
 
-type ICountryExtendedWrapper = ICountryExtended[]
 
 const CountryExtended: FC<RouterParams> = ({name}) => {
-    const [country, setCountry] = useState<ICountryExtended>({} as ICountryExtended)
+    const [country] = useState<IDetailedCountry>({} as IDetailedCountry)
     useEffect(() => {
         API.get(`/name/${name}?fullText=true`)
             .then(res => res.data)
             .catch(e => console.log(e))
-            .then((json: ICountryExtendedWrapper) => console.log(json));
+            .then((json: DetailedCountries) => console.log(json));
     }, [name])
-    // todo: fix the bug with extended pages
     return (
         <Flex>
             <StyledImage src={country.flag}/>

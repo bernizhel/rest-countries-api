@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import * as React from 'react';
 import styled from "styled-components";
-import IContainerProps from "./IBaseContainer";
+import IContainerProps from "./baseContainer";
 
 interface FlexProps extends IContainerProps {
     direction?: string;

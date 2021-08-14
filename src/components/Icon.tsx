@@ -4,7 +4,7 @@ import {useAppSelector} from "../app/hooks";
 import {selectTheme} from "../features/theme/themeSlice";
 import styled from "styled-components";
 
-export interface IconProps {
+interface IIconProps {
     name: string;
     children?: React.ReactNode | React.ReactChild;
 }
@@ -13,7 +13,7 @@ export const StyledIcon = styled.div`
   display: block;
 `;
 
-const Icon: FC<IconProps> = ({name}) => {
+const Icon: FC<IIconProps> = ({name}) => {
     const theme = useAppSelector(selectTheme)
     return <ion-icon name={theme === 'light' ? name + '-outline' : name} />
 }

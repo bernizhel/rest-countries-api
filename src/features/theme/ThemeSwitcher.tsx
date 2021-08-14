@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import {useAppDispatch} from "../../app/hooks";
-import {toggle} from "./themeSlice";
+import {toggleTheme} from "./themeSlice";
 import {mediaSizes as ms} from '../../styles/vars'
 import styled from "styled-components";
 import Icon, {StyledIcon} from "../../components/Icon";
@@ -21,7 +21,7 @@ const StyledMoon = styled(StyledIcon)`
 const ThemeSwitcher: FC = () => {
     const dispatch = useAppDispatch()
     return (
-        <StyledSwitcher onClick={() => dispatch(toggle())}>
+        <StyledSwitcher onClick={() => dispatch(toggleTheme())}>
             <StyledMoon><Icon name={'moon'} /></StyledMoon> Dark Mode
         </StyledSwitcher>
     );

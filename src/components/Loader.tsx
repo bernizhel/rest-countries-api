@@ -1,4 +1,5 @@
 import styled, {keyframes} from "styled-components";
+import Flex from "./Flex";
 
 const ldsSpinnerAnimation = keyframes`
   0% {
@@ -52,20 +53,22 @@ const StyledLoader = styled.div`
 
 const Loader = () => {
     return (
-        <StyledLoader>
-            <div/>
-            <div/>
-            <div/>
-            <div/>
-            <div/>
-            <div/>
-            <div/>
-            <div/>
-            <div/>
-            <div/>
-            <div/>
-            <div/>
-        </StyledLoader>
+        <Flex jc={'center'} w={'100%'}>
+            <StyledLoader data-testid={'loader'}>
+                <div/>
+                <div/>
+                <div/>
+                <div/>
+                <div/>
+                <div/>
+                <div/>
+                <div/>
+                <div/>
+                <div/>
+                <div/>
+                <div/>
+            </StyledLoader>
+        </Flex>
     );
 };
 

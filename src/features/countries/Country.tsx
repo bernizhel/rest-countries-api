@@ -2,15 +2,7 @@ import { FC } from 'react';
 import {Link} from "react-router-dom";
 import styled from "styled-components";
 import {fontOptions as fo} from "../../styles/vars";
-
-export interface ICountryBase {
-    flag: string;
-    name: string;
-    population: number;
-    region: string;
-    capital: string;
-    numericCode: string;
-}
+import {IBaseCountry} from "./countriesTypes";
 
 const StyledCountry = styled.li`
   a {
@@ -47,7 +39,11 @@ export const StyledImage = styled.img`
   height: 125px;
 `;
 
-const Country: FC<ICountryBase> = ({...country}) => {
+interface ICountryProps {
+    country: IBaseCountry;
+}
+
+const Country: FC<ICountryProps> = ({country}) => {
     return (
         <StyledCountry>
             <Link to={'/' + country.name.toLowerCase()}>

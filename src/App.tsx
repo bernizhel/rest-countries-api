@@ -2,12 +2,13 @@ import Header from "./components/Header";
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import styled, {createGlobalStyle, ThemeProvider} from 'styled-components';
 import {theme} from "./styles/theme";
-import {useAppSelector} from "./app/hooks";
+import {useAppDispatch, useAppSelector} from "./app/hooks";
 import {selectTheme} from "./features/theme/themeSlice";
 import {fontOptions as fo} from "./styles/vars";
 import Main from "./components/Main";
 import Detailed from "./components/Detailed";
-import ErrorBoundary from "./ErrorBoundary";
+import ErrorBoundary from "./Error/ErrorBoundary";
+import {setNextPage} from "./features/countries/countriesSlice";
 
 export const GlobalStyles = createGlobalStyle`
   *, *::before, *::after {
@@ -22,23 +23,22 @@ export const GlobalStyles = createGlobalStyle`
 
   body {
     &::-webkit-scrollbar {
-      width: .75em;
+      width: 0.5em;
     }
 
     &::-webkit-scrollbar-track {
-      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-      background-color: #aaa;
+      background-color: ${props => props.theme === 'light'
+              ? theme.light.border : theme.dark.border};
+      width: 20px;
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: #5a5a5a;
-      &:hover {
-        background-color: #666;
-      }
+      background-color: ${props => props.theme === 'light'
+              ? theme.light.elementBackground : theme.dark.elementBackground};
     }
 
     &::-webkit-scrollbar-corner {
-      background-color: #333;
+      background-color: #999;
     }
   }
 `;
@@ -50,16 +50,28 @@ const StyledApp = styled.div`
 `;
 
 function App() {
+    const dispatch = useAppDispatch();
     const themeMode = useAppSelector(selectTheme);
+    const handleScroll = (e: React.UIEvent<HTMLElement>): void => {
+        console.log({
+            event: e,
+            target: e.target,
+            currentTarget: e.currentTarget,
+            scrollTop: e.currentTarget.scrollTop,
+        });
+    };
+
     return (
         <ThemeProvider theme={(themeMode === 'light' || themeMode === 'dark') ? theme[themeMode] : ''}>
-            <GlobalStyles/>
+            <GlobalStyles theme={themeMode}/>
             <BrowserRouter>
                 <StyledApp>
                     <Header/>
                     <Switch>
                         <Route exact path='/'>
-                            <Main/>
+                            <ErrorBoundary>
+                                <Main onScroll={handleScroll}/>
+                            </ErrorBoundary>
                         </Route>
                         <ErrorBoundary>
                             <Route path={'/:name'} component={Detailed}/>
