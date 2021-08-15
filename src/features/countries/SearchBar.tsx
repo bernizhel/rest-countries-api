@@ -1,8 +1,10 @@
-import { MutableRefObject, useRef } from 'react';
 import styled from "styled-components";
 import Icon, {StyledIcon} from "../../components/Icon";
+import {useForm, SubmitHandler} from 'react-hook-form';
+import {useAppDispatch} from "../../app/hooks";
+import {setSearch} from "./countriesSlice";
 
-const StyledBar = styled.div`
+const StyledBar = styled.form`
   background-color: ${props => props.theme.elementBackground};
   color: ${props => props.theme.text};
   padding: 11px 20px;
@@ -26,16 +28,24 @@ const StyledInput = styled.input`
   border: none;
   outline: none;
   display: inline-block;
+  min-height: 24px;
   width: calc(100% - 10px - 16px);
 `;
 
+type TextInput = {
+    search: string;
+}
+
 const SearchBar = () => {
-    const inputRef = useRef() as MutableRefObject<HTMLInputElement>
+    const {register, handleSubmit, setFocus} = useForm<TextInput>();
+    const dispatch = useAppDispatch();
+    const onSubmit: SubmitHandler<TextInput> = data => dispatch(setSearch(data.search.toLowerCase()));
     return (
-        <StyledBar onClick={() => inputRef.current.focus()}>
+        <StyledBar onSubmit={handleSubmit(onSubmit)} onClick={() => setFocus('search')}>
             <StyledMG><Icon name={'search'}/></StyledMG>
-            <StyledInput ref={inputRef} type={'text'}
-                         placeholder={'Search for a country...'}/>
+            <StyledInput {...register('search')} type={'text'} autoComplete={'off'}
+                         placeholder={'Search for a country...'}
+            />
         </StyledBar>
     );
 };

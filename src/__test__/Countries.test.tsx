@@ -3,13 +3,7 @@ import {Provider} from "react-redux";
 import {store} from "../app/store";
 import App from "../App";
 import {Countries, DetailedCountries} from "../features/countries/countriesTypes";
-import {fetchCountries, setAllCountries} from "../features/countries/countriesSlice";
-
-interface ICountriesState {
-    loading: boolean;
-    detailed: boolean;
-    countries: Countries | DetailedCountries;
-}
+import {fetchCountries, ICountriesState, setAllCountries} from "../features/countries/countriesSlice";
 
 describe('Countries Tests', () => {
     let queryByTestId: Function, countriesState: ICountriesState;
@@ -26,16 +20,16 @@ describe('Countries Tests', () => {
     it('+++ stores initial values', () => {
         const loader = queryByTestId('loader');
         expect(loader).toBeTruthy();
-        expect(countriesState.loading).toBeTruthy();
+        expect(countriesState.status).toBe('idle');
         expect(countriesState.detailed).toBeFalsy();
-        expect(countriesState.countries).toEqual([]);
+        expect(countriesState.countries).toEqual([] as Countries);
     });
 
 
     it('+++ fetches all the countries after some amount of time', done => {
         const loader = queryByTestId('loader');
         expect(loader).toBeNull();
-        expect(countriesState.loading).toBeFalsy();
+        expect(countriesState.status).toBeFalsy();
         expect(countriesState.detailed).toBeFalsy();
         function cb() {
             expect(countriesState.countries).toEqual(

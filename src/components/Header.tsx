@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import {FC} from 'react';
 import ThemeSwitcher from '../features/theme/ThemeSwitcher'
 import Flex from './Flex'
 import styled from "styled-components";
@@ -17,10 +17,12 @@ const StyledHeader = styled(Flex)`
 const StyledHeading = styled.h1`
   font-size: 1.375rem;
   cursor: pointer;
+
   a {
     color: ${props => props.theme.text};
     text-decoration: none;
   }
+
   @media ${ms.MOBILE} {
     font-size: 1.125rem;
   }

@@ -1,4 +1,8 @@
+// todo: make select tag look good
+
 import styled from "styled-components";
+import {Region, setRegion} from "./countriesSlice";
+import {useAppDispatch} from "../../app/hooks";
 
 const StyledSelect = styled.select`
   appearance: none;
@@ -12,11 +16,16 @@ const StyledSelect = styled.select`
 `;
 
 const SearchFilter = () => {
+    const dispatch = useAppDispatch();
     return (
-        <StyledSelect defaultValue={'default'}>
-            <option value='default'>Filter by Region</option>
+        <StyledSelect defaultValue={'default'} onChange={event => {
+            console.log(event.target.value as Region)
+            dispatch(setRegion(event.target.value as Region));
+        }}>
+            <option disabled value='default'>Filter by Region</option>
+            <option value=''>Worldwide</option>
             <option value='africa'>Africa</option>
-            <option value='america'>America</option>
+            <option value='americas'>Americas</option>
             <option value='asia'>Asia</option>
             <option value='europe'>Europe</option>
             <option value='oceania'>Oceania</option>

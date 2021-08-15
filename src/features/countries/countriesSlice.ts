@@ -1,18 +1,14 @@
 import {createAsyncThunk, createSlice, PayloadAction, SerializedError} from "@reduxjs/toolkit";
 import {RootState} from "../../app/store";
-import {
-    Countries,
-    DetailedCountries,
-    keysOfCountry,
-    keysOfDetailedCountry
-} from "./countriesTypes";
+import {Countries, DetailedCountries, INeighbor, keysOfCountry, keysOfDetailedCountry} from "./countriesTypes";
 import countriesAPI from "./countriesAPI";
 import {AxiosResponse} from "axios";
 
-type Region = '' | 'europe' | 'africa' | 'americas' | 'asia' | 'oceania';
+export type Region = '' | 'europe' | 'africa' | 'americas' | 'asia' | 'oceania';
+
 type Status = 'idle' | 'loading' | 'rejected';
 
-interface CountriesState {
+export interface ICountriesState {
     status: Status;
     error: SerializedError | null;
     detailed: boolean;
@@ -24,9 +20,10 @@ interface CountriesState {
         name: string;
         region: Region;
     }
+    toggledInfo: boolean;
 }
 
-const initialState: CountriesState = {
+const initialState: ICountriesState = {
     status: 'idle',
     error: null,
     detailed: false,
@@ -38,28 +35,29 @@ const initialState: CountriesState = {
         name: '',
         region: '',
     },
+    toggledInfo: false,
 }
 
-export const fetchCountries = createAsyncThunk<Countries | DetailedCountries,
+export const fetchCountries = createAsyncThunk<DetailedCountries | Countries,
     undefined,
-    { rejectValue: Error }>(
+    { rejectValue: Error, state: RootState }>(
     'countries/fetchCountries',
     async (_, thunkAPI) => {
-        const state: CountriesState = thunkAPI.getState() as CountriesState;
-        const builtURL: string = URLBuilder(state);
-        const data = await countriesAPI.get(builtURL)
+        const countriesState = thunkAPI.getState().countries as ICountriesState;
+        const builtURL: string = URLBuilder(countriesState);
+        let data = await countriesAPI.get(builtURL)
             .then((res: AxiosResponse) => res.data)
             .catch((e: Error) => thunkAPI.rejectWithValue(e));
-        return state.detailed ? data as DetailedCountries : data as Countries;
+        return countriesState.detailed ? data as DetailedCountries : data as Countries;
     }
 );
 
 export const fetchNeighbor = async (code: string) => {
     const url: string = `alpha/${code}?fields=name`;
     return await countriesAPI.get(url)
-        .then((res: AxiosResponse) => res.data)
+        .then((res: AxiosResponse) => res.data as INeighbor)
         .catch((e: Error) => {
-            console.log(e)
+            throw Error(e.message);
         });
 }
 
@@ -67,32 +65,45 @@ const countriesSlice = createSlice({
     name: 'countries',
     initialState,
     reducers: {
-        setAllCountries: (state: CountriesState) => {
+        setAllCountries: (state: ICountriesState) => {
             state.detailed = false;
+            state.exactName = '';
             state.countries = [] as Countries;
             state.page = 1;
             state.filter = {
                 name: '',
                 region: '',
             };
+            state.toggledInfo = false;
         },
-        setDetailedCountry: (state: CountriesState, action: PayloadAction<string>) => {
+        setDetailedCountry: (state: ICountriesState, action: PayloadAction<string>) => {
             state.detailed = true;
             state.countries = [] as DetailedCountries;
             state.exactName = action.payload;
+            state.page = 1;
+            state.filter = {
+                name: '',
+                region: '',
+            };
+            state.toggledInfo = false;
         },
-        setNextPage: (state: CountriesState) => {
+        setNextPage: (state: ICountriesState) => {
             state.page += 1;
         },
-        setRegion: (state: CountriesState, action: PayloadAction<Region>) => {
+        setRegion: (state: ICountriesState, action: PayloadAction<Region>) => {
+            state.page = 1;
             state.filter.region = action.payload;
             state.countries = filterCountries(state);
 
         },
-        setSearch: (state: CountriesState, action: PayloadAction<string>) => {
+        setSearch: (state: ICountriesState, action: PayloadAction<string>) => {
+            state.page = 1;
             state.filter.name = action.payload;
             state.countries = filterCountries(state);
         },
+        setToggledInfo: (state: ICountriesState) => {
+            state.toggledInfo = !state.toggledInfo;
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -102,7 +113,12 @@ const countriesSlice = createSlice({
             .addCase(
                 fetchCountries.fulfilled,
                 (state, {payload}) => {
-                    state.countries = payload;
+                    if (state.detailed) {
+                        state.countries = payload as DetailedCountries;
+                    } else {
+                        state.allCountries = payload;
+                        state.countries = [...state.allCountries] as Countries;
+                    }
                     state.status = 'idle';
                 }
             )
@@ -113,7 +129,7 @@ const countriesSlice = createSlice({
     },
 });
 
-function URLBuilder(state: CountriesState): string {
+function URLBuilder(state: ICountriesState): string {
     let url = '';
     if (!state.detailed) {
         url += 'all';
@@ -125,14 +141,16 @@ function URLBuilder(state: CountriesState): string {
     return url;
 }
 
-function filterCountries(state: CountriesState) {
-    if (state.filter.region) {
+function filterCountries(state: ICountriesState): Countries {
+    if (state.filter.name === '') {
+        state.countries = [...state.allCountries];
+    } else {
         state.countries = state.allCountries
-            .filter(country => country.region === state.filter.region)
+            .filter(country => country.name.toLowerCase().includes(state.filter.name)) as Countries;
     }
-    if (state.filter.name) {
+    if (state.filter.region) {
         state.countries = state.countries
-            .filter(country => country.name.includes(state.filter.name));
+            .filter(country => country.region.toLowerCase() === state.filter.region) as Countries;
     }
     return state.countries;
 }
@@ -143,13 +161,16 @@ export const {
     setSearch,
     setRegion,
     setNextPage,
+    setToggledInfo,
 } = countriesSlice.actions;
 
+export const selectToggledInfo = (state: RootState) => state.countries.toggledInfo;
 export const selectStatus = (state: RootState) => state.countries.status;
 export const selectError = (state: RootState) => state.countries.error;
 export const selectCountries = (state: RootState) => state.countries.countries;
 export const selectPage = (state: RootState) => state.countries.page;
 export const PAGE_LIMIT = 24;
 export const selectAllCountriesLength = (state: RootState) => state.countries.allCountries.length;
+export const selectCountriesLength = (state: RootState) => state.countries.countries.length;
 
 export default countriesSlice.reducer;

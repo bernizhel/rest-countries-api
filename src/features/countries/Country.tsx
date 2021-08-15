@@ -1,14 +1,18 @@
-import { FC } from 'react';
+import {FC} from 'react';
 import {Link} from "react-router-dom";
 import styled from "styled-components";
 import {fontOptions as fo} from "../../styles/vars";
 import {IBaseCountry} from "./countriesTypes";
+import {fetchCountries, setDetailedCountry} from "./countriesSlice";
+import {useAppDispatch} from "../../app/hooks";
+import {formatNumber} from "../../utils/utils";
 
 const StyledCountry = styled.li`
   a {
     text-decoration: none;
     color: ${props => props.theme.text};
   }
+
   list-style: none;
   width: 200px;
   min-height: 300px;
@@ -39,18 +43,23 @@ export const StyledImage = styled.img`
   height: 125px;
 `;
 
-interface ICountryProps {
+export interface ICountryProps {
     country: IBaseCountry;
 }
 
 const Country: FC<ICountryProps> = ({country}) => {
+    const pathName = country.name.toLowerCase();
+    const dispatch = useAppDispatch();
     return (
         <StyledCountry>
-            <Link to={'/' + country.name.toLowerCase()}>
+            <Link to={'/' + pathName} onClick={() => {
+                dispatch(setDetailedCountry(pathName));
+                dispatch(fetchCountries());
+            }}>
                 <StyledImage src={country.flag} alt={`Flag of ${country.name}`}/>
                 <StyledInfo>
                     <StyledInfoHeading>{country.name}</StyledInfoHeading>
-                    <StyledInfoItem>Population: <StyledInfoValue>{country.population}</StyledInfoValue></StyledInfoItem>
+                    <StyledInfoItem>Population: <StyledInfoValue>{formatNumber(country.population.toString())}</StyledInfoValue></StyledInfoItem>
                     <StyledInfoItem>Region: <StyledInfoValue>{country.region}</StyledInfoValue></StyledInfoItem>
                     <StyledInfoItem>Capital: <StyledInfoValue>{country.capital}</StyledInfoValue></StyledInfoItem>
                 </StyledInfo>

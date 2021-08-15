@@ -2,13 +2,12 @@ import Header from "./components/Header";
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import styled, {createGlobalStyle, ThemeProvider} from 'styled-components';
 import {theme} from "./styles/theme";
-import {useAppDispatch, useAppSelector} from "./app/hooks";
+import {useAppSelector} from "./app/hooks";
 import {selectTheme} from "./features/theme/themeSlice";
 import {fontOptions as fo} from "./styles/vars";
 import Main from "./components/Main";
-import Detailed from "./components/Detailed";
 import ErrorBoundary from "./Error/ErrorBoundary";
-import {setNextPage} from "./features/countries/countriesSlice";
+import DetailedCountry from "./features/countries/DetailedCountry";
 
 export const GlobalStyles = createGlobalStyle`
   *, *::before, *::after {
@@ -34,7 +33,7 @@ export const GlobalStyles = createGlobalStyle`
 
     &::-webkit-scrollbar-thumb {
       background-color: ${props => props.theme === 'light'
-              ? theme.light.elementBackground : theme.dark.elementBackground};
+              ? '#ccc' : theme.dark.elementBackground};
     }
 
     &::-webkit-scrollbar-corner {
@@ -50,17 +49,7 @@ const StyledApp = styled.div`
 `;
 
 function App() {
-    const dispatch = useAppDispatch();
     const themeMode = useAppSelector(selectTheme);
-    const handleScroll = (e: React.UIEvent<HTMLElement>): void => {
-        console.log({
-            event: e,
-            target: e.target,
-            currentTarget: e.currentTarget,
-            scrollTop: e.currentTarget.scrollTop,
-        });
-    };
-
     return (
         <ThemeProvider theme={(themeMode === 'light' || themeMode === 'dark') ? theme[themeMode] : ''}>
             <GlobalStyles theme={themeMode}/>
@@ -70,12 +59,14 @@ function App() {
                     <Switch>
                         <Route exact path='/'>
                             <ErrorBoundary>
-                                <Main onScroll={handleScroll}/>
+                                <Main/>
                             </ErrorBoundary>
                         </Route>
-                        <ErrorBoundary>
-                            <Route path={'/:name'} component={Detailed}/>
-                        </ErrorBoundary>
+                        <Route path={'/:name'}>
+                            <ErrorBoundary>
+                                <DetailedCountry/>
+                            </ErrorBoundary>
+                        </Route>
                     </Switch>
                 </StyledApp>
             </BrowserRouter>

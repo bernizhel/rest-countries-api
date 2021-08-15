@@ -9,15 +9,19 @@ import {useAppDispatch, useAppSelector} from "../app/hooks";
 import {
     fetchCountries,
     PAGE_LIMIT,
-    selectCountries, selectError,
+    selectCountries,
+    selectCountriesLength,
+    selectError,
     selectPage,
     selectStatus,
     setAllCountries,
+    setNextPage,
 } from "../features/countries/countriesSlice";
 import Loader from "./Loader";
 import {IBaseCountry} from "../features/countries/countriesTypes";
-import {useErrorHandler} from 'react-error-boundary';
 import Error from '../Error/Error'
+import useWindowPosition from "../utils/useWindowPosition";
+import CountriesCounter from "../features/countries/CountriesCounter";
 
 
 const StyledMain = styled(Flex)`
@@ -36,32 +40,38 @@ const StyledGrid = styled(Grid)`
   }
 `;
 
-interface IMainProps {
-    onScroll: (e: React.UIEvent<HTMLElement>) => void;
-}
-
-const Main: FC<IMainProps> = () => {
-    const handleError = useErrorHandler();
+const Main: FC = () => {
     const dispatch = useAppDispatch();
-    const status = useAppSelector(selectStatus);
-    const countries = useAppSelector(selectCountries);
-    const page = useAppSelector(selectPage);
-    const error = useAppSelector(selectError);
     useEffect(() => {
         dispatch(setAllCountries());
         dispatch(fetchCountries());
-    }, [dispatch, handleError]);
+    }, [dispatch]);
+    const status = useAppSelector(selectStatus);
+    const error = useAppSelector(selectError);
+    const countries = useAppSelector(selectCountries);
+
+    const page = useAppSelector(selectPage);
+    const countriesLength = useAppSelector(selectCountriesLength);
+    const showedCountriesLength = page * PAGE_LIMIT;
+    const scrollPosition = useWindowPosition();
+    useEffect(() => {
+        if ((scrollPosition >= document.body.offsetHeight - (window.innerHeight * 2))
+            && countriesLength > showedCountriesLength) {
+            dispatch(setNextPage());
+        }
+    }, [dispatch, scrollPosition, countriesLength, showedCountriesLength])
     return (
         <StyledMain type={'main'} jc={'center'} w={'100%'}>
             <Flex direction={'column'} maxw={'1080px'} w={'100%'}>
                 <Search/>
                 {status !== 'idle'
                     ? (status === 'loading'
-                        ? <Loader/>
-                        : <Error error={error} stack={error ? error.stack as string : ''}/>
+                            ? <Loader/>
+                            : <Error error={error} stack={error ? error.stack as string : ''}/>
                     )
                     : <StyledGrid type={'ul'} w={'100%'} tc={'repeat(4, 1fr)'} gap={'50px'} ji={'center'}>
-                        {countries.slice(0, page * PAGE_LIMIT).map((country: IBaseCountry, i: number) => (
+                        <CountriesCounter />
+                        {countries.slice(0, showedCountriesLength).map((country: IBaseCountry, i: number) => (
                             <Country key={i} country={country}/>
                         ))}
                     </StyledGrid>

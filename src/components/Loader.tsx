@@ -28,6 +28,7 @@ const StyledLoader = styled.div`
   position: relative;
   width: 80px;
   height: 80px;
+  margin-top: 25px;
   justify-self: center;
   align-self: center;
 

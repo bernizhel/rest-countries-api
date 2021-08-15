@@ -1,21 +1,16 @@
+// todo: error stack parser
+
 import styled from "styled-components";
 import {FC} from "react";
 import {IErrorComponentProps, IFormattedInfoProps} from "./errorTypes";
 import Flex from "../components/Flex";
 
-const StyledComponent = styled.span`
-  color: indianred;
-`;
-
 const FormattedStack: FC<IFormattedInfoProps> = ({stack}) => {
-    const matches = stack.matchAll(/(at )(\w+)( \(.+\))/g);
-    if (matches) {
+    if (stack) {
         return (
-            <ol>
-                {[...matches].map(match => (
-                    <li key={match.index}>{match[1]}<StyledComponent>{match[2]}</StyledComponent>{match[3]}</li>
-                ))}
-            </ol>
+            <>
+                {stack}
+            </>
         );
     } else {
         return <pre>[[NO INFO]]</pre>;

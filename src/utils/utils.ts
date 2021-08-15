@@ -1,7 +1,33 @@
-export function toTitleCase(str: string): string {
-    return str.replace(
-        /\w\S*/g,
-        (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
-    );
+export function parseStack(stack: string, sep: string = ') '): Array<string> {
+    const parsedStack: Array<string> = [];
+    let line: string = '', char: string = '', prevChar: string = '';
+    let [prevCharShouldBe, charShouldBe] = sep.split('');
+    let i: number = 0;
+    while (i < stack.length) {
+        char = stack[i];
+        if (prevChar === prevCharShouldBe && char === charShouldBe) {
+            parsedStack.push(line);
+            line = '';
+            continue;
+        }
+        line += char;
+        prevChar = char;
+        i++;
+    }
+    parsedStack.push(line);
+    return parsedStack;
 }
 
+export function formatNumber(num: string) {
+    if (num.match(/\D/)) {
+        throw new TypeError('The passed string contains non-number characters.')
+    }
+    return num
+        .split('')
+        .reverse()
+        .join('')
+        .replace(/\d{3}/g, '$&,')
+        .split('')
+        .reverse()
+        .join('');
+}
