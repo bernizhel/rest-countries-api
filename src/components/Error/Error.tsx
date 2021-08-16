@@ -3,7 +3,7 @@
 import styled from "styled-components";
 import {FC} from "react";
 import {IErrorComponentProps, IFormattedInfoProps} from "./errorTypes";
-import Flex from "../components/Flex";
+import Flex from "../Flex";
 
 const FormattedStack: FC<IFormattedInfoProps> = ({stack}) => {
     if (stack) {

@@ -3,9 +3,9 @@ import {Link} from "react-router-dom";
 import styled from "styled-components";
 import {fontOptions as fo} from "../../styles/vars";
 import {IBaseCountry} from "./countriesTypes";
+import {formatNumber} from "../../utils/utils";
 import {fetchCountries, setDetailedCountry} from "./countriesSlice";
 import {useAppDispatch} from "../../app/hooks";
-import {formatNumber} from "../../utils/utils";
 
 const StyledCountry = styled.li`
   a {

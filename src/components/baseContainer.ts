@@ -9,6 +9,7 @@ export default interface IContainerProps {
     h?: string;
     maxh?: string;
     minh?: string;
+    gap?: string;
     type?: 'ul' | 'ol' | 'div' | 'nav' | 'section' | 'main' | 'header';
     children?: React.ReactChild | React.ReactNode;
 }

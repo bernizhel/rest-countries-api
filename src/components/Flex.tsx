@@ -1,5 +1,4 @@
-import { FC } from 'react';
-import * as React from 'react';
+import {FC} from 'react';
 import styled from "styled-components";
 import IContainerProps from "./baseContainer";
 
@@ -11,8 +10,8 @@ interface FlexProps extends IContainerProps {
 const StyledFlex = styled.div<FlexProps>`
   display: ${props => props.display || 'flex'};
   justify-content: ${props => props.jc || 'flex-start'};
-  align-items: ${props => props.ai|| 'flex-start'};
-  align-content: ${props => props.ac|| 'flex-start'};
+  align-items: ${props => props.ai || 'flex-start'};
+  align-content: ${props => props.ac || 'flex-start'};
   flex-direction: ${props => props.direction || 'row'};
   flex-wrap: ${props => props.wrap || 'nowrap'};
   width: ${props => props.w || 'auto'};
@@ -21,6 +20,7 @@ const StyledFlex = styled.div<FlexProps>`
   max-height: ${props => props.maxh || 'auto'};
   min-width: ${props => props.minw || 'auto'};
   min-height: ${props => props.minh || 'auto'};
+  gap: ${props => props.gap || '0'};
 `;
 
 const Flex: FC<FlexProps> = ({type, children, ...props}) => {

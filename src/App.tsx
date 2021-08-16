@@ -6,7 +6,7 @@ import {useAppSelector} from "./app/hooks";
 import {selectTheme} from "./features/theme/themeSlice";
 import {fontOptions as fo} from "./styles/vars";
 import Main from "./components/Main";
-import ErrorBoundary from "./Error/ErrorBoundary";
+import ErrorBoundary from "./components/Error/ErrorBoundary";
 import DetailedCountry from "./features/countries/DetailedCountry";
 
 export const GlobalStyles = createGlobalStyle`

@@ -1,5 +1,4 @@
-import { FC } from 'react';
-import * as React from 'react';
+import {FC} from 'react';
 import styled from "styled-components";
 import IContainerProps from "./baseContainer";
 
@@ -9,7 +8,6 @@ interface GridProps extends IContainerProps {
     rowGap?: string;
     tr?: string;
     tc?: string;
-    gap?: string;
 }
 
 const StyledGrid = styled.div<GridProps>`

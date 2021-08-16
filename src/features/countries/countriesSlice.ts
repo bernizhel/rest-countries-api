@@ -1,6 +1,12 @@
 import {createAsyncThunk, createSlice, PayloadAction, SerializedError} from "@reduxjs/toolkit";
 import {RootState} from "../../app/store";
-import {Countries, DetailedCountries, INeighbor, keysOfCountry, keysOfDetailedCountry} from "./countriesTypes";
+import {
+    Countries,
+    DetailedCountries,
+    INeighbor,
+    keysOfCountry,
+    keysOfDetailedCountry,
+} from "./countriesTypes";
 import countriesAPI from "./countriesAPI";
 import {AxiosResponse} from "axios";
 
@@ -10,9 +16,11 @@ type Status = 'idle' | 'loading' | 'rejected';
 
 export interface ICountriesState {
     status: Status;
-    error: SerializedError | null;
+    error: SerializedError | Error | undefined;
     detailed: boolean;
     exactName: string;
+    neighbors: string[];
+    neighborsStatus: Status;
     page: number;
     allCountries: Countries;
     countries: Countries | DetailedCountries;
@@ -25,9 +33,11 @@ export interface ICountriesState {
 
 const initialState: ICountriesState = {
     status: 'idle',
-    error: null,
+    error: undefined,
     detailed: false,
     exactName: '',
+    neighbors: [],
+    neighborsStatus: 'idle',
     page: 1,
     allCountries: [] as Countries,
     countries: [] as Countries,
@@ -52,22 +62,35 @@ export const fetchCountries = createAsyncThunk<DetailedCountries | Countries,
     }
 );
 
-export const fetchNeighbor = async (code: string) => {
-    const url: string = `alpha/${code}?fields=name`;
-    return await countriesAPI.get(url)
-        .then((res: AxiosResponse) => res.data as INeighbor)
-        .catch((e: Error) => {
-            throw Error(e.message);
-        });
-}
+export const fetchNeighbors = createAsyncThunk<string[],
+    string[],
+    { rejectValue: Error, state: RootState }>(
+    'countries/fetchNeighbors',
+    async (borderCodes) => {
+        const borderNames: string[] = [];
+        for (const code of borderCodes) {
+            const url: string = `alpha/${code}?fields=name`;
+            await countriesAPI.get(url)
+                .then((res: AxiosResponse) => res.data as INeighbor)
+                .then(array => array?.name && borderNames.push(array.name))
+                .catch((e: Error) => {
+                    throw Error(e.message);
+                });
+        }
+        return borderNames;
+    }
+);
 
 const countriesSlice = createSlice({
     name: 'countries',
     initialState,
     reducers: {
         setAllCountries: (state: ICountriesState) => {
+            state.error = undefined;
             state.detailed = false;
             state.exactName = '';
+            state.neighbors = [];
+            state.neighborsStatus = 'idle';
             state.countries = [] as Countries;
             state.page = 1;
             state.filter = {
@@ -77,9 +100,12 @@ const countriesSlice = createSlice({
             state.toggledInfo = false;
         },
         setDetailedCountry: (state: ICountriesState, action: PayloadAction<string>) => {
+            state.error = undefined;
             state.detailed = true;
             state.countries = [] as DetailedCountries;
             state.exactName = action.payload;
+            state.neighbors = [];
+            state.neighborsStatus = 'idle';
             state.page = 1;
             state.filter = {
                 name: '',
@@ -94,7 +120,6 @@ const countriesSlice = createSlice({
             state.page = 1;
             state.filter.region = action.payload;
             state.countries = filterCountries(state);
-
         },
         setSearch: (state: ICountriesState, action: PayloadAction<string>) => {
             state.page = 1;
@@ -103,7 +128,7 @@ const countriesSlice = createSlice({
         },
         setToggledInfo: (state: ICountriesState) => {
             state.toggledInfo = !state.toggledInfo;
-        }
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -125,6 +150,21 @@ const countriesSlice = createSlice({
             .addCase(fetchCountries.rejected, (state, action) => {
                 state.status = 'rejected';
                 state.error = action.payload || action.error;
+            })
+            .addCase(fetchNeighbors.pending, (state) => {
+                state.neighborsStatus = 'loading';
+            })
+            .addCase(fetchNeighbors.fulfilled, (state, {payload}) => {
+                if (state.detailed) {
+                    state.neighbors = payload;
+                } else {
+                    state.neighbors = [];
+                }
+                state.neighborsStatus = 'idle';
+            })
+            .addCase(fetchNeighbors.rejected, (state, action) => {
+                state.error = action.payload || action.error;
+                state.neighborsStatus = 'rejected';
             });
     },
 });
@@ -165,6 +205,8 @@ export const {
 } = countriesSlice.actions;
 
 export const selectToggledInfo = (state: RootState) => state.countries.toggledInfo;
+export const selectNeighbors = (state: RootState) => state.countries.neighbors;
+export const selectNeighborsStatus = (state: RootState) => state.countries.neighborsStatus;
 export const selectStatus = (state: RootState) => state.countries.status;
 export const selectError = (state: RootState) => state.countries.error;
 export const selectCountries = (state: RootState) => state.countries.countries;

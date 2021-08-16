@@ -19,7 +19,7 @@ import {
 } from "../features/countries/countriesSlice";
 import Loader from "./Loader";
 import {IBaseCountry} from "../features/countries/countriesTypes";
-import Error from '../Error/Error'
+import Error from './Error/Error'
 import useWindowPosition from "../utils/useWindowPosition";
 import CountriesCounter from "../features/countries/CountriesCounter";
 
