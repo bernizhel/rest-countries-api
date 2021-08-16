@@ -22,7 +22,7 @@ export function formatNumber(num: string) {
     if (num.match(/\D/)) {
         throw new TypeError('The passed string contains non-number characters.')
     }
-    return num
+    num = num
         .split('')
         .reverse()
         .join('')
@@ -30,4 +30,8 @@ export function formatNumber(num: string) {
         .split('')
         .reverse()
         .join('');
+    if (num.startsWith(',')) {
+        return num.slice(1);
+    }
+    return num;
 }

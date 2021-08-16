@@ -28,7 +28,6 @@ const StyledLoader = styled.div`
   position: relative;
   width: 80px;
   height: 80px;
-  margin-top: 25px;
   justify-self: center;
   align-self: center;
 
@@ -54,7 +53,7 @@ const StyledLoader = styled.div`
 
 const Loader = () => {
     return (
-        <Flex jc={'center'} w={'100%'}>
+        <Flex jc={'center'} w={'100%'} h={'calc(100vh - 100px)'} ai={'center'}>
             <StyledLoader data-testid={'loader'}>
                 <div/>
                 <div/>

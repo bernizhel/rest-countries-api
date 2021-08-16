@@ -1,4 +1,3 @@
-import React from 'react';
 import StyledButton from "./StyledButton";
 import {setToggledInfo} from "./countriesSlice";
 import {useAppDispatch} from "../../app/hooks";

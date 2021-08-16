@@ -22,7 +22,7 @@ const ThemeSwitcher: FC = () => {
     const dispatch = useAppDispatch()
     return (
         <StyledSwitcher onClick={() => dispatch(toggleTheme())}>
-            <StyledMoon><Icon name={'moon'} /></StyledMoon> Dark Mode
+            <StyledMoon><Icon name={'moon'} hasOutline={true} /></StyledMoon> Dark Mode
         </StyledSwitcher>
     );
 };

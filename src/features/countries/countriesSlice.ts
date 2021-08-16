@@ -1,12 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction, SerializedError} from "@reduxjs/toolkit";
 import {RootState} from "../../app/store";
-import {
-    Countries,
-    DetailedCountries,
-    INeighbor,
-    keysOfCountry,
-    keysOfDetailedCountry,
-} from "./countriesTypes";
+import {Countries, DetailedCountries, INeighbor, keysOfCountry, keysOfDetailedCountry,} from "./countriesTypes";
 import countriesAPI from "./countriesAPI";
 import {AxiosResponse} from "axios";
 
@@ -211,7 +205,9 @@ export const selectStatus = (state: RootState) => state.countries.status;
 export const selectError = (state: RootState) => state.countries.error;
 export const selectCountries = (state: RootState) => state.countries.countries;
 export const selectPage = (state: RootState) => state.countries.page;
-export const PAGE_LIMIT = 24;
+export const PAGE_LIMIT = (function detectMob() {
+    return ((window.innerWidth <= 800) && (window.innerHeight <= 1200)) ? 12 : 24;
+})();
 export const selectAllCountriesLength = (state: RootState) => state.countries.allCountries.length;
 export const selectCountriesLength = (state: RootState) => state.countries.countries.length;
 

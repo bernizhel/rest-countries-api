@@ -26,6 +26,9 @@ import CountriesCounter from "../features/countries/CountriesCounter";
 
 const StyledMain = styled(Flex)`
   padding: 35px 50px;
+  @media ${ms.MOBILE} {
+    padding: 35px 20px;
+  }
 `;
 
 const StyledGrid = styled(Grid)`
@@ -53,13 +56,14 @@ const Main: FC = () => {
     const page = useAppSelector(selectPage);
     const countriesLength = useAppSelector(selectCountriesLength);
     const showedCountriesLength = page * PAGE_LIMIT;
-    const scrollPosition = useWindowPosition();
+    const scrollPosition = useWindowPosition(window.pageYOffset);
+    console.log('rerender')
     useEffect(() => {
-        if ((scrollPosition >= document.body.offsetHeight - (window.innerHeight * 2))
+        if ((scrollPosition >= document.body.offsetHeight - window.innerHeight * 2)
             && countriesLength > showedCountriesLength) {
             dispatch(setNextPage());
         }
-    }, [dispatch, scrollPosition, countriesLength, showedCountriesLength])
+    }, [scrollPosition])
     return (
         <StyledMain type={'main'} jc={'center'} w={'100%'}>
             <Flex direction={'column'} maxw={'1080px'} w={'100%'}>
@@ -70,12 +74,12 @@ const Main: FC = () => {
                             : <Error error={error} stack={error ? error.stack as string : ''}/>
                     )
                     : <StyledGrid type={'ul'} w={'100%'} tc={'repeat(4, 1fr)'} gap={'50px'} ji={'center'}>
-                        <CountriesCounter />
-                        {countries.slice(0, showedCountriesLength).map((country: IBaseCountry, i: number) => (
+                        {countries[0] !== undefined ? countries.slice(0, showedCountriesLength).map((country: IBaseCountry, i: number) => (
                             <Country key={i} country={country}/>
-                        ))}
+                        )) : 'No matches.'}
                     </StyledGrid>
                 }
+                <CountriesCounter />
             </Flex>
         </StyledMain>
     );

@@ -1,4 +1,4 @@
-import {FC} from 'react';
+import {FC, memo} from 'react';
 import {Link} from "react-router-dom";
 import styled from "styled-components";
 import {fontOptions as fo} from "../../styles/vars";
@@ -61,11 +61,11 @@ const Country: FC<ICountryProps> = ({country}) => {
                     <StyledInfoHeading>{country.name}</StyledInfoHeading>
                     <StyledInfoItem>Population: <StyledInfoValue>{formatNumber(country.population.toString())}</StyledInfoValue></StyledInfoItem>
                     <StyledInfoItem>Region: <StyledInfoValue>{country.region}</StyledInfoValue></StyledInfoItem>
-                    <StyledInfoItem>Capital: <StyledInfoValue>{country.capital}</StyledInfoValue></StyledInfoItem>
+                    <StyledInfoItem>Capital: <StyledInfoValue>{country.capital || '[no info]'}</StyledInfoValue></StyledInfoItem>
                 </StyledInfo>
             </Link>
         </StyledCountry>
     );
 };
 
-export default Country;
+export default memo(Country);

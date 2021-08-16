@@ -1,6 +1,6 @@
 import {FC, ReactChild, ReactNode} from 'react';
 import styled from "styled-components";
-import {fontOptions as fo} from "../../styles/vars";
+import {fontOptions as fo, mediaSizes as ms} from "../../styles/vars";
 import {Link} from 'react-router-dom';
 import {fetchCountries, setDetailedCountry} from "./countriesSlice";
 import {useAppDispatch} from "../../app/hooks";
@@ -10,8 +10,18 @@ const StyledNeighbor = styled.div`
   background-color: ${props => props.theme.elementBackground};
   border: 2px solid ${props => props.theme.border};
   font-weight: ${fo.LIGHT_WEIGHT};
-  padding: 5px;
-  border-radius: 10px;
+  border-radius: 5px;
+  padding: 5px 15px;
+  margin: 1px 3px;
+  vertical-align: middle;
+  a {
+    text-decoration: none;
+    color: ${props => props.theme.text};
+    font-weight: ${fo.LIGHT_WEIGHT};
+  }
+  @media ${ms.MOBILE} {
+    margin: 3px 5px 3px 0;
+  }
 `;
 
 interface INeighborProps {

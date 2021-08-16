@@ -3,6 +3,7 @@ import Icon, {StyledIcon} from "../../components/Icon";
 import {useForm, SubmitHandler} from 'react-hook-form';
 import {useAppDispatch} from "../../app/hooks";
 import {setSearch} from "./countriesSlice";
+import {mediaSizes as ms} from "../../styles/vars";
 
 const StyledBar = styled.form`
   background-color: ${props => props.theme.elementBackground};
@@ -13,6 +14,9 @@ const StyledBar = styled.form`
   outline: none;
   width: 100%;
   max-width: 350px;
+  @media ${ms.MOBILE_TABLET} {
+    align-self: center;
+  }
 `;
 
 const StyledMG = styled(StyledIcon)`
@@ -36,13 +40,15 @@ type TextInput = {
     search: string;
 }
 
+// todo: make it work on change (not on submit)
 const SearchBar = () => {
     const {register, handleSubmit, setFocus} = useForm<TextInput>();
     const dispatch = useAppDispatch();
     const onSubmit: SubmitHandler<TextInput> = data => dispatch(setSearch(data.search.toLowerCase()));
+    console.log('rerender')
     return (
         <StyledBar onSubmit={handleSubmit(onSubmit)} onClick={() => setFocus('search')}>
-            <StyledMG><Icon name={'search'}/></StyledMG>
+            <StyledMG><Icon name={'search'} hasOutline={false}/></StyledMG>
             <StyledInput {...register('search')} type={'text'} autoComplete={'off'}
                          placeholder={'Search for a country...'}
             />

@@ -22,13 +22,12 @@ export const GlobalStyles = createGlobalStyle`
 
   body {
     &::-webkit-scrollbar {
-      width: 0.5em;
+      width: 10px;
     }
 
     &::-webkit-scrollbar-track {
       background-color: ${props => props.theme === 'light'
               ? theme.light.border : theme.dark.border};
-      width: 20px;
     }
 
     &::-webkit-scrollbar-thumb {

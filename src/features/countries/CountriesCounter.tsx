@@ -1,4 +1,3 @@
-import React from 'react';
 import {useAppSelector} from "../../app/hooks";
 import {
     PAGE_LIMIT,
@@ -11,9 +10,8 @@ import styled from "styled-components";
 
 const StyledCountriesCounter = styled.div`
   position: fixed;
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  right: 0;
+  right: 10px;
+  bottom: 10px;
   color: gray;
 `;
 
@@ -31,10 +29,9 @@ const CountriesCounter = () => {
         <StyledCountriesCounter>
             {toggledInfo && (
                 <>
-                    <p>Matched <StyledNumber>{countriesLength}</StyledNumber> out
-                       of <StyledNumber>{allCountriesLength}</StyledNumber></p>
+                    <p>Matched <StyledNumber>{countriesLength}</StyledNumber>/<StyledNumber>{allCountriesLength}</StyledNumber></p>
                     <p>Showed <StyledNumber>{countriesLength < showedCountriesLength ? countriesLength
-                        : showedCountriesLength}</StyledNumber> out of <StyledNumber>{countriesLength}</StyledNumber>
+                        : showedCountriesLength}</StyledNumber>/<StyledNumber>{countriesLength}</StyledNumber>
                     </p>
                 </>
             )}
