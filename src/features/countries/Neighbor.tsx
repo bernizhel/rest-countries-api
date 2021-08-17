@@ -2,7 +2,7 @@ import {FC, ReactChild, ReactNode} from 'react';
 import styled from "styled-components";
 import {fontOptions as fo, mediaSizes as ms} from "../../styles/vars";
 import {Link} from 'react-router-dom';
-import {fetchCountries, setDetailedCountry} from "./countriesSlice";
+import {setNextCountry} from "./countriesSlice";
 import {useAppDispatch} from "../../app/hooks";
 
 const StyledNeighbor = styled.div`
@@ -14,11 +14,13 @@ const StyledNeighbor = styled.div`
   padding: 5px 15px;
   margin: 1px 3px;
   vertical-align: middle;
+
   a {
     text-decoration: none;
     color: ${props => props.theme.text};
     font-weight: ${fo.LIGHT_WEIGHT};
   }
+
   @media ${ms.MOBILE} {
     margin: 3px 5px 3px 0;
   }
@@ -34,8 +36,7 @@ const Neighbor: FC<INeighborProps> = ({name}) => {
     return (
         <StyledNeighbor>
             <Link to={'/' + name.toLowerCase()} onClick={() => {
-                dispatch(setDetailedCountry(name));
-                dispatch(fetchCountries());
+                dispatch(setNextCountry(name));
             }}>
                 {name}
             </Link>

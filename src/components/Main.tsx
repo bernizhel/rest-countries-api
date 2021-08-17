@@ -1,4 +1,4 @@
-import {FC, useEffect} from 'react';
+import {FC, memo, useEffect} from 'react';
 import styled from "styled-components";
 import Flex from "./Flex";
 import Search from '../features/countries/Search';
@@ -10,12 +10,11 @@ import {
     fetchCountries,
     PAGE_LIMIT,
     selectCountries,
-    selectCountriesLength,
     selectError,
     selectPage,
     selectStatus,
     setAllCountries,
-    setNextPage,
+    setPreviousFilter,
 } from "../features/countries/countriesSlice";
 import Loader from "./Loader";
 import {IBaseCountry} from "../features/countries/countriesTypes";
@@ -47,23 +46,14 @@ const Main: FC = () => {
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(setAllCountries());
-        dispatch(fetchCountries());
+        dispatch(fetchCountries()).then(() => dispatch(setPreviousFilter()));
     }, [dispatch]);
     const status = useAppSelector(selectStatus);
     const error = useAppSelector(selectError);
     const countries = useAppSelector(selectCountries);
-
     const page = useAppSelector(selectPage);
-    const countriesLength = useAppSelector(selectCountriesLength);
     const showedCountriesLength = page * PAGE_LIMIT;
-    const scrollPosition = useWindowPosition(window.pageYOffset);
-    console.log('rerender')
-    useEffect(() => {
-        if ((scrollPosition >= document.body.offsetHeight - window.innerHeight * 2)
-            && countriesLength > showedCountriesLength) {
-            dispatch(setNextPage());
-        }
-    }, [scrollPosition])
+    useWindowPosition();
     return (
         <StyledMain type={'main'} jc={'center'} w={'100%'}>
             <Flex direction={'column'} maxw={'1080px'} w={'100%'}>
@@ -79,10 +69,10 @@ const Main: FC = () => {
                         )) : 'No matches.'}
                     </StyledGrid>
                 }
-                <CountriesCounter />
+                <CountriesCounter/>
             </Flex>
         </StyledMain>
     );
 };
 
-export default Main;
+export default memo(Main);

@@ -45,7 +45,6 @@ const SearchBar = () => {
     const {register, handleSubmit, setFocus} = useForm<TextInput>();
     const dispatch = useAppDispatch();
     const onSubmit: SubmitHandler<TextInput> = data => dispatch(setSearch(data.search.toLowerCase()));
-    console.log('rerender')
     return (
         <StyledBar onSubmit={handleSubmit(onSubmit)} onClick={() => setFocus('search')}>
             <StyledMG><Icon name={'search'} hasOutline={false}/></StyledMG>

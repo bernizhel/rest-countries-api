@@ -1,21 +1,30 @@
-import {FC} from "react";
-import {useAppSelector} from "../app/hooks";
-import {selectTheme} from "../features/theme/themeSlice";
+import {Component} from "react";
+import {connect} from 'react-redux';
 import styled from "styled-components";
-
-interface IIconProps {
-    name: string;
-    hasOutline: boolean;
-    children?: React.ReactNode | React.ReactChild;
-}
+import {RootState} from "../app/store";
 
 export const StyledIcon = styled.div`
   display: block;
 `;
 
-const Icon: FC<IIconProps> = ({name, hasOutline}) => {
-    const theme = useAppSelector(selectTheme);
-    return <ion-icon name={theme === 'light' && hasOutline ? name + '-outline' : name}/>;
+interface IIconProps {
+    theme: string;
+    name: string;
+    hasOutline: boolean;
+    children?: React.ReactNode | React.ReactChild;
 }
 
-export default Icon
+class Icon extends Component<IIconProps> {
+    shouldComponentUpdate(nextProps: Readonly<IIconProps>, nextState: Readonly<{}>, nextContext: any): boolean {
+        return this.props.hasOutline;
+    }
+    render() {
+        return <ion-icon name={this.props.theme === 'light' ? this.props.name + '-outline' : this.props.name}/>;
+    }
+}
+
+const mapStateToProps = (state: RootState) => ({
+    theme: state.theme.mode,
+});
+
+export default connect(mapStateToProps)(Icon);

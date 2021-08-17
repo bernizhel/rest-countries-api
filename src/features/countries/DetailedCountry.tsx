@@ -4,13 +4,15 @@ import Loader from "../../components/Loader";
 import Error from "../../components/Error/Error";
 import {
     fetchCountries,
-    fetchNeighbors,
-    selectCountries,
+    fetchNeighbors, selectAllCountriesLength,
+    selectCountries, selectDetailed,
+    selectDetailedList,
     selectError,
     selectNeighbors,
     selectNeighborsStatus,
     selectStatus,
-    setDetailedCountry
+    setDetailedCountry,
+    setNextCountry
 } from "./countriesSlice";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {IDetailedCountry} from "./countriesTypes";
@@ -45,10 +47,7 @@ const StyledDetails = styled(Flex)`
 `;
 
 const StyledImage = styled.img`
-  max-width: 90%;
-  @media ${ms.MOBILE} {
-    max-width: 100%;
-  }
+  max-width: 100%;
 `;
 
 const StyledInfo = styled(Flex)`
@@ -68,23 +67,24 @@ const StyledInfo = styled(Flex)`
     font-weight: ${fo.LIGHT_WEIGHT};
   }
 
-  div div:first-child {
+  > div:nth-child(2) div:first-child {
     flex-basis: 55%;
   }
 
-  div div:last-child {
+  > div:nth-child(2) div:last-child {
     flex-basis: 45%;
   }
 
   & > div:last-child {
     margin-top: 50px;
   }
-  
+
   @media ${ms.MOBILE} {
     padding: 35px 0;
     > div:nth-child(2) {
       flex-direction: column;
     }
+
     > div:last-child span {
       display: block;
     }
@@ -96,18 +96,26 @@ const DetailedCountry: FC = () => {
     const dispatch = useAppDispatch();
     const status = useAppSelector(selectStatus);
     const error = useAppSelector(selectError);
+    const detailed = useAppSelector(selectDetailed);
+    const detailedList = useAppSelector(selectDetailedList);
+    const detailedCountry = useAppSelector(selectCountries)[0] as IDetailedCountry;
+    const allCountriesLength = useAppSelector(selectAllCountriesLength);
     useEffect(() => {
-        if (status === 'idle') {
-            dispatch(setDetailedCountry(name));
+        if (allCountriesLength === 0 && detailedCountry === undefined && status === 'idle' && detailedList.length === 0) {
+            dispatch(setNextCountry(name));
+        }
+    }, [dispatch, allCountriesLength, detailedCountry, status, name, detailedList]);
+    useEffect(() => {
+        if (detailedList.length !== 0 && detailed === true) {
+            dispatch(setDetailedCountry());
             dispatch(fetchCountries());
         }
-    }, [name]);
-    const detailedCountry = useAppSelector(selectCountries)[0] as IDetailedCountry;
+    }, [dispatch, detailedList, detailed]);
     useEffect(() => {
         if (detailedCountry !== undefined) {
             dispatch(fetchNeighbors(detailedCountry.borders));
         }
-    }, [detailedCountry])
+    }, [dispatch, detailedCountry]);
     const neighbors = useAppSelector(selectNeighbors);
     const neighborsStatus = useAppSelector(selectNeighborsStatus);
     return (<>{
@@ -118,7 +126,7 @@ const DetailedCountry: FC = () => {
             ) : (detailedCountry !== undefined &&
             <StyledContainer type={'section'} ai={'center'} jc={'center'} w={'100%'} minh={'calc(100vh - 100px)'}>
               <StyledDetails maxw={'1080px'} w={'100%'} h={'100%'} maxh={'100%'}>
-                <Flex h={'100%'} jc={'center'} direction={'column'} minw={'50%'}>
+                <Flex h={'100%'} jc={'center'} direction={'column'} w={'100%'}>
                   <BackButton/>
                   <StyledImage src={detailedCountry.flag} alt={`Flag of ${detailedCountry.name}`}/>
                 </Flex>

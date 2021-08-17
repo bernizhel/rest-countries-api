@@ -1,10 +1,11 @@
 import StyledButton from "./StyledButton";
 import Icon, {StyledIcon} from "../../components/Icon";
 import styled from "styled-components";
-import {selectAllCountriesLength} from "./countriesSlice";
-import {useAppSelector} from "../../app/hooks";
+import {selectAllCountriesLength, setPreviousCountry} from "./countriesSlice";
+import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {useHistory} from "react-router-dom";
 import {fontOptions as fo} from "../../styles/vars";
+import {FC, memo} from "react";
 
 const StyledArrow = styled(StyledIcon)`
   display: inline-block;
@@ -21,14 +22,16 @@ const StyledBackButton = styled(StyledButton)`
   font-weight: ${fo.LIGHT_WEIGHT};
 `;
 
-const BackButton = () => {
+const BackButton: FC = () => {
     const history = useHistory();
     const allCountriesLength = useAppSelector(selectAllCountriesLength);
+    const dispatch = useAppDispatch();
     return (
         <StyledBackButton onClick={() => {
             if (allCountriesLength === 0) {
                 history.push('/');
             } else {
+                dispatch(setPreviousCountry());
                 history.goBack();
             }
         }}>
@@ -37,4 +40,4 @@ const BackButton = () => {
     );
 };
 
-export default BackButton;
+export default memo(BackButton);

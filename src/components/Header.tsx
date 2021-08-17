@@ -1,9 +1,11 @@
-import {FC} from 'react';
+import {FC, memo} from 'react';
 import ThemeSwitcher from '../features/theme/ThemeSwitcher'
 import Flex from './Flex'
 import styled from "styled-components";
 import {mediaSizes as ms} from "../styles/vars";
 import {Link} from 'react-router-dom';
+import {useAppDispatch} from "../app/hooks";
+import {fetchCountries, setAllCountries, setNullFilter} from "../features/countries/countriesSlice";
 
 const StyledHeader = styled(Flex)`
   background-color: ${props => props.theme.elementBackground};
@@ -29,14 +31,19 @@ const StyledHeading = styled.h1`
 `
 
 const Header: FC = () => {
+    const dispatch = useAppDispatch();
     return (
         <StyledHeader type={'header'} ai={'center'} jc={'center'} minh={'60px'} w={'100%'}>
             <Flex jc={'space-between'} ai={'center'} maxw={'1080px'} w={'100%'}>
-                <StyledHeading><Link to='/'>Where in the world?</Link></StyledHeading>
+                <StyledHeading><Link to='/' onClick={() => {
+                    dispatch(setNullFilter());
+                    dispatch(setAllCountries());
+                    dispatch(fetchCountries());
+                }}>Where in the world?</Link></StyledHeading>
                 <ThemeSwitcher/>
             </Flex>
         </StyledHeader>
     );
 };
 
-export default Header;
+export default memo(Header);

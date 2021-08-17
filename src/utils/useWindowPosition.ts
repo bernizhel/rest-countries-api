@@ -1,22 +1,25 @@
 import {useLayoutEffect, useState} from 'react';
-import {useAppSelector} from "../app/hooks";
-import {selectPage} from "../features/countries/countriesSlice";
+import {useAppDispatch, useAppSelector} from "../app/hooks";
+import {PAGE_LIMIT, selectCountriesLength, selectPage, setNextPage} from "../features/countries/countriesSlice";
 
-export default function useWindowPosition(curPos: number) {
-    const [scrollPosition, setPosition] = useState(curPos);
+export default function useWindowPosition() {
+    const [scrollPosition, setPosition] = useState(0);
     const page = useAppSelector(selectPage);
+    const countriesLength = useAppSelector(selectCountriesLength);
+    const showedCountriesLength = page * PAGE_LIMIT;
+    const dispatch = useAppDispatch();
     useLayoutEffect(() => {
         function updatePosition() {
-            if (window.pageYOffset - scrollPosition > window.innerHeight) {
+            if (window.pageYOffset > document.body.offsetHeight - window.innerHeight * 1.5
+                && countriesLength > showedCountriesLength) {
                 setPosition(window.pageYOffset);
-            } else if (window.pageYOffset < scrollPosition && page === 1) {
-                setPosition(0);
+                dispatch(setNextPage());
             }
         }
 
         window.addEventListener('scroll', updatePosition);
         updatePosition();
         return () => window.removeEventListener('scroll', updatePosition);
-    }, [scrollPosition, curPos, page]);
+    }, [countriesLength, showedCountriesLength, dispatch, page]);
     return scrollPosition;
 }

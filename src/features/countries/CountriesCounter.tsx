@@ -7,6 +7,7 @@ import {
     selectToggledInfo
 } from "./countriesSlice";
 import styled from "styled-components";
+import {memo} from "react";
 
 const StyledCountriesCounter = styled.div`
   position: fixed;
@@ -39,4 +40,4 @@ const CountriesCounter = () => {
     );
 };
 
-export default CountriesCounter;
+export default memo(CountriesCounter);

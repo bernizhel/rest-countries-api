@@ -4,7 +4,7 @@ import styled from "styled-components";
 import {fontOptions as fo} from "../../styles/vars";
 import {IBaseCountry} from "./countriesTypes";
 import {formatNumber} from "../../utils/utils";
-import {fetchCountries, setDetailedCountry} from "./countriesSlice";
+import {setNextCountry} from "./countriesSlice";
 import {useAppDispatch} from "../../app/hooks";
 
 const StyledCountry = styled.li`
@@ -53,8 +53,7 @@ const Country: FC<ICountryProps> = ({country}) => {
     return (
         <StyledCountry>
             <Link to={'/' + pathName} onClick={() => {
-                dispatch(setDetailedCountry(pathName));
-                dispatch(fetchCountries());
+                dispatch(setNextCountry(pathName));
             }}>
                 <StyledImage src={country.flag} alt={`Flag of ${country.name}`}/>
                 <StyledInfo>
