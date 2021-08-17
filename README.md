@@ -21,7 +21,7 @@ Users should be able to:
 
 ### Links
 
-- [Live Site](https://bernizhel.github.io/rest-countries-api)
+- [Live Site](https://inspiring-tereshkova-bbc491.netlify.app)
 
 ## My process
 
