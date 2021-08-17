@@ -2,18 +2,6 @@
 
 This is a solution to the [REST Countries API with color theme switcher challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/rest-countries-api-with-color-theme-switcher-5cacc469fec04111f7b848ca).
 
-## Table of contents
-
-- [Overview](#overview)
-  - [The challenge](#the-challenge)
-  - [Screenshot](#screenshot)
-  - [Links](#links)
-- [My process](#my-process)
-  - [Built with](#built-with)
-  - [What I learned](#what-i-learned)
-  - [Continued development](#continued-development)
-- [Author](#author)
-
 ## Overview
 
 ### The challenge
@@ -29,26 +17,31 @@ Users should be able to:
 
 ### Screenshot
 
-![No screenshot](./screenshot.jpg)
+![screenshot.png](./screenshot.png)
 
 ### Links
 
-- [Solution URL]()
-- [Live Site]()
+- [Live Site](https://bernizhel.github.io/rest-countries-api)
 
 ## My process
 
 ### Built with
 
-- React, Redux and Typescript
+- React, Redux
+- Typescript
 - Styled Components
-- Tested with Jest
+- And react-router
 
 ### What I learned
 
+- How to work with REST API
+- React and Redux toolkit
+- Client-side routing with react-router
+
 ### Continued development
 
-### Useful resources
+1. Made a page to load on scroll
+2. Made a button to show stats (matched and showed countries)
 
 ## Author
 
