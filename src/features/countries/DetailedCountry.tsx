@@ -4,14 +4,16 @@ import Loader from "../../components/Loader";
 import Error from "../../components/Error/Error";
 import {
     fetchCountries,
-    fetchNeighbors, selectAllCountriesLength,
-    selectCountries, selectDetailed,
+    fetchNeighbor,
+    selectAllCountriesLength,
+    selectCountries,
+    selectDetailed,
     selectDetailedList,
     selectError,
     selectNeighbors,
     selectNeighborsStatus,
     selectStatus,
-    setDetailedCountry,
+    setDetailedCountry, setNeighborStatus,
     setNextCountry
 } from "./countriesSlice";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
@@ -113,7 +115,11 @@ const DetailedCountry: FC = () => {
     }, [dispatch, detailedList, detailed]);
     useEffect(() => {
         if (detailedCountry !== undefined) {
-            dispatch(fetchNeighbors(detailedCountry.borders));
+            if (detailedCountry.borders.length === 0) {
+                dispatch(setNeighborStatus('idle'));
+                return;
+            }
+            detailedCountry.borders.forEach(border => dispatch(fetchNeighbor(border)));
         }
     }, [dispatch, detailedCountry]);
     const neighbors = useAppSelector(selectNeighbors);
