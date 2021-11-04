@@ -176,7 +176,7 @@ function URLBuilder(state: ICountriesState): string {
     let url = '';
     if (!state.detailed) {
         url += 'all';
-        url += `?fields=${keysOfCountry.join(';')}`;
+        url += `?fields=${keysOfCountry.join(',')}`;
     } else {
         let name: string;
         if (state.detailedList) {
@@ -185,7 +185,7 @@ function URLBuilder(state: ICountriesState): string {
             throw Error('No name for details show.')
         }
         url += `name/${name}?fullText=true`;
-        url += `&fields=${keysOfDetailedCountry.join(';')}`;
+        url += `&fields=${keysOfDetailedCountry.join(',')}`;
     }
     return url;
 }

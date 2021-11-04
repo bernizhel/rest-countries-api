@@ -1,23 +1,7 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# Avoid accidental Sketch file upload 
-###############################################
-## Please do not remove line 5 - thanks! 🙂 ##
-###############################################
+# design
 *.sketch
-
-# Avoid accidental XD or Figma upload if you convert the design file
-#######################################################
-## Please do not remove lines 11 and 12 - thanks! 🙂 ##
-#######################################################
 *.xd
 *.fig
-
-# Initial Design Files
-README-initial.md
-style-guide.md
-/design/
-/.idea/
 
 # dependencies
 /node_modules

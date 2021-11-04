@@ -132,7 +132,7 @@ const DetailedCountry: FC = () => {
             ) : (detailedCountry !== undefined &&
             <StyledContainer type={'section'} ai={'center'} jc={'center'} w={'100%'} minh={'calc(100vh - 100px)'}>
               <StyledDetails maxw={'1080px'} w={'100%'} h={'100%'} maxh={'100%'}>
-                <Flex h={'100%'} jc={'center'} direction={'column'} w={'100%'}>
+                <Flex minh={'100%'} jc={'center'} direction={'column'} minw={'50%'}>
                   <BackButton/>
                   <StyledImage src={detailedCountry.flag} alt={`Flag of ${detailedCountry.name}`}/>
                 </Flex>

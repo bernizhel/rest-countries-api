@@ -8,12 +8,12 @@ This is a solution to the [REST Countries API with color theme switcher challeng
 
 Users should be able to:
 
-- See all countries from the API on the homepage
-- Search for a country using an `input` field
-- Filter countries by region
-- Click on a country to see more detailed information on a separate page
-- Click through to the border countries on the detail page
-- Toggle the color scheme between light and dark mode
+-   See all countries from the API on the homepage
+-   Search for a country using an `input` field
+-   Filter countries by region
+-   Click on a country to see more detailed information on a separate page
+-   Click through to the border countries on the detail page
+-   Toggle the color scheme between light and dark mode
 
 ### Screenshot
 
@@ -21,22 +21,22 @@ Users should be able to:
 
 ### Links
 
-- [Live Site](https://inspiring-tereshkova-bbc491.netlify.app)
+-   [Live Site](https://inspiring-tereshkova-bbc491.netlify.app)
 
 ## My process
 
 ### Built with
 
-- React, Redux
-- Typescript
-- Styled Components
-- And react-router
+-   React, Redux
+-   Typescript
+-   Styled Components
+-   And react-router
 
 ### What I learned
 
-- How to work with REST API
-- React and Redux toolkit
-- Client-side routing with react-router
+-   How to work with REST API
+-   React and Redux toolkit
+-   Client-side routing with react-router
 
 ### Continued development
 
@@ -45,4 +45,4 @@ Users should be able to:
 
 ## Author
 
-- Frontend Mentor - [@bernizhel](https://www.frontendmentor.io/profile/bernizhel)
+-   Frontend Mentor - [@bernizhel](https://www.frontendmentor.io/profile/bernizhel)

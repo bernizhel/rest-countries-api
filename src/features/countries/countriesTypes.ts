@@ -1,5 +1,3 @@
-// todo: transforming interfaces keys to an array of the keys
-
 export interface IBaseCountry {
     flag: string;
     name: string;

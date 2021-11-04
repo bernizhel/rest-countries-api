@@ -1,5 +1,3 @@
-// todo: make select tag look good
-
 import styled from "styled-components";
 import {Region, setRegion} from "./countriesSlice";
 import {useAppDispatch} from "../../app/hooks";

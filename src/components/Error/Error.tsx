@@ -1,5 +1,3 @@
-// todo: error stack parser
-
 import styled from "styled-components";
 import {FC} from "react";
 import {IErrorComponentProps, IFormattedInfoProps} from "./errorTypes";
@@ -7,11 +5,7 @@ import Flex from "../Flex";
 
 const FormattedStack: FC<IFormattedInfoProps> = ({stack}) => {
     if (stack) {
-        return (
-            <>
-                {stack}
-            </>
-        );
+        return <>{stack}</>;
     } else {
         return <pre>[[NO INFO]]</pre>;
     }
@@ -76,7 +70,7 @@ const Error: FC<IErrorComponentProps> = ({error, stack}) => {
                 <h2>Something went wrong while getting data.</h2>
                 <p>{error?.name} - {error?.message}</p>
                 <details>
-                    <summary>Details</summary>
+                    <summary>More details</summary>
                     <FormattedStack stack={stack}/>
                 </details>
             </StyledError>
